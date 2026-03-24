@@ -7,9 +7,11 @@ fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
 
     for (const issue of issues) {
       const card = document.createElement("div");
-      
-      card.classList.add("issue-card");
-      card.setAttribute("data-status", issue.status);
+      card.className = "issue-card cursor-pointer";
+
+      card.onclick = function () {
+        openIssueModal(issue.id);
+      };
 
       let labelsHTML = "";
       for (const label of issue.labels) {
@@ -17,16 +19,16 @@ fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
       }
 
       card.innerHTML = `
-        <div class="bg-gray-100 rounded-xl p-4 border border-gray-200 shadow-sm h-full">
-          <div class="flex justify-between items-center mb-3">
-            <div class="px-3 py-1 text-xs font-bold rounded-full ${issue.status === 'open' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">${issue.status}</div>
-            <span class="text-xs font-bold px-3 py-1 rounded-full bg-gray-300 text-gray-800">${issue.priority.toUpperCase()}</span>
+        <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm h-full hover:border-blue-400 transition-all">
+          <div class="flex justify-between items-center mb-3 text-xs font-bold text-gray-600">
+            <div>${issue.status}</div>
+            <span>${issue.priority.toUpperCase()}</span>
           </div>
           <h2 class="font-bold text-gray-800 mb-2">${issue.title}</h2>
-          <p class="text-sm text-gray-500 mb-3">${issue.description}</p>
+          <p class="text-sm text-gray-500 mb-3 line-clamp-2">${issue.description}</p>
           <div class="flex gap-2 flex-wrap mb-4">${labelsHTML}</div>
-          <hr>
-          <div class="text-xs text-gray-500 mt-3">
+          <hr class="border-gray-100">
+          <div class="flex justify-between items-center text-xs text-gray-500 mt-3">
             <p>#${issue.id} by ${issue.author}</p>
             <p>${new Date(issue.createdAt).toLocaleDateString()}</p>
           </div>
@@ -70,3 +72,42 @@ openBtn.addEventListener("click", function() {
 closedBtn.addEventListener("click", function() {
   filterCards("closed");
 });
+
+
+
+const issueModal = document.getElementById("issue_modal");
+const modalContent = document.getElementById("modal-content");
+
+function openIssueModal(id) {
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
+    .then(res => res.json())
+    .then(data => {
+      const issue = data.data;
+
+      modalContent.innerHTML = `
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">${issue.title}</h2>
+        <p class="text-gray-600 mb-6">${issue.description}</p>
+        
+        <div class="grid grid-cols-2 gap-4 text-sm border-t pt-4">
+          <div>
+            <p class="text-gray-400 uppercase text-xs font-bold">Status</p>
+            <p class="text-gray-700 font-medium">${issue.status}</p>
+          </div>
+          <div>
+            <p class="text-gray-400 uppercase text-xs font-bold">Priority</p>
+            <p class="text-gray-700 font-medium">${issue.priority}</p>
+          </div>
+          <div>
+            <p class="text-gray-400 uppercase text-xs font-bold">Author</p>
+            <p class="text-gray-700 font-medium">${issue.author}</p>
+          </div>
+          <div>
+            <p class="text-gray-400 uppercase text-xs font-bold">Assignee</p>
+            <p class="text-gray-700 font-medium">${issue.assignee || 'None'}</p>
+          </div>
+        </div>
+      `;
+
+      issueModal.showModal();
+    });
+}
