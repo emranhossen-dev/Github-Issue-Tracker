@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="py-5 bg-base-200 min-h-screen">
+    <header class="w-11/12 md:w-10/12 mx-auto border-b-2 border-blue-300">
+        <div class="navbar bg-base-100 shadow-sm flex justify-between">
+            <div class="flex gap-3 px-4">
+                <img src="./assets/github-logo.png" class="w-8 h-full" alt="">
+                <a class="text-xl">Github Issue Tracker</a>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
+                <div class="">
+                    <button class="btn btn-primary btn-soft">+New Item</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </header>
+    <main class="w-10/12 mx-auto py-6">
+        <section class="tab-section">
+            <div class="flex gap-3 py-2">
+                <button id="all" class="btn btn-primary btn-soft px-5 py-2">All</button>
+                <button id="open" class="btn btn-primary btn-soft px-5 py-2">Open</button>
+                <button id="closed" class="btn btn-primary btn-soft px-5 py-2">Closed</button>
+            </div>
+        </section>
+        <section class="cards">
+            <div id="issues-container" class="p-5 grid md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        </section>
+
+
+    </main>
+    <footer class="w-10/12 mx-auto">
+
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>
